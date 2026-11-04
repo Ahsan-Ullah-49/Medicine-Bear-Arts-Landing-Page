@@ -1,0 +1,11 @@
+# Keep source files consistent across GitHub, Windows, and static hosts.
+* text=auto eol=lf
+
+# Product media must remain binary; Git must not attempt line-ending conversion.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.mp4 binary
+*.webm binary
