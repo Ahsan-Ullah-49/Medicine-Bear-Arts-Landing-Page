@@ -382,11 +382,6 @@
   document.querySelector("[data-review-next]")?.addEventListener("click", () => { reviewIndex = (reviewIndex + 1) % reviews.length; showReview(1, true); scheduleReview(); });
   document.addEventListener("visibilitychange", scheduleReview);
   reducedMotion.addEventListener("change", scheduleReview);
-  document.querySelector("[data-back-to-top]")?.addEventListener("click", event => {
-    event.preventDefault();
-    if (lenis) lenis.scrollTo(0, { duration: 1.1 });
-    else window.scrollTo({ top: 0, behavior: reducedMotion.matches ? "auto" : "smooth" });
-  });
   resetSelection(currentProduct()); renderProducts(); renderCart(); showReview(); scheduleReview();
   if (commerceMode === "checking") loadStore();
 })();
