@@ -4,7 +4,7 @@ A mobile-first, static product landing page for Medicine Bear Arts. It presents 
 
 ## What is included
 
-- Eleven selectable products through `?product=<slug>` URLs.
+- Twelve selectable products through `?product=<slug>` URLs.
 - Product galleries, descriptions, options, quantity controls, and product-specific WhatsApp messages.
 - Shopify Storefront Cart API integration in the Canadian market with CAD pricing.
 - A multi-item bag that redirects to Shopify's secure checkout URL.
@@ -50,13 +50,13 @@ The page uses the public Storefront API at `medicine-bear-arts.myshopify.com` in
 
 When the Storefront API responds, the page reads current product variants, prices, availability, and the Shopify checkout URL. The displayed bag creates a Shopify cart. When the connection fails, the bag becomes a clearly labelled local preview and checkout is disabled.
 
-A final live read audit confirmed all 11 configured products in the Canadian storefront, including their titles, CAD prices, variant IDs, and availability. A successful checkout redirect confirms that Shopify accepts a cart; it does not confirm payment or an order.
+A final live read audit confirmed the originally configured 11 products in the Canadian storefront, including their titles, CAD prices, variant IDs, and availability. Heart of the Night Brass Earrings was then added from the client CSV and independently confirmed live in the Canadian storefront. A successful checkout redirect confirms that Shopify accepts a cart; it does not confirm payment or an order.
 
 ## Catalog and media updates
 
 Edit [js/products.js](js/products.js) to add a product, change approved campaign copy, update local media paths, or change a product slug. Keep Shopify handles in `storeUrl` accurate because the app derives live product reads from that URL.
 
-Use product media that is approved by the client. The current 51 PNG files are about 58 MB in total. Convert and resize copies for production before paid traffic, while retaining the supplied originals separately.
+Use product media that is approved by the client. The current 55 PNG files are about 32 MB in total. Convert and resize copies for production before paid traffic, while retaining the supplied originals separately.
 
 ## GitHub and static deployment
 

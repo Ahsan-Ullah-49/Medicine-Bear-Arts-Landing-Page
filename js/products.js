@@ -378,6 +378,27 @@ window.MEDICINE_BEAR_CONFIG = {
       "variants": [
         { "id": "gid://shopify/ProductVariant/58034913673382", "options": [], "price": 100.0, "available": true }
       ]
+    },
+    {
+      "slug": "heart-of-the-night-brass-earrings",
+      "name": "Heart of the Night Brass Earrings",
+      "storeUrl": "https://medicinebeararts.com/products/heart-of-the-night-brass-earrings",
+      "currency": "CAD",
+      "price": 80.0,
+      "priceStatus": "snapshot",
+      "priceSource": "Client-provided Shopify product CSV export; live Canadian storefront read confirmed 2026-11-05",
+      "description": "An owl and a heart come together in Heart of the Night, a brass earring design celebrating love, connection, and the quiet beauty of the night.\n\nFeaturing warm brass and silver hooks, these earrings make a meaningful gift for someone you love or a special addition to your own collection.",
+      "images": [
+        "assets/Products/12 Heart of the Night Brass Earrings/1.png",
+        "assets/Products/12 Heart of the Night Brass Earrings/2.png",
+        "assets/Products/12 Heart of the Night Brass Earrings/3.png",
+        "assets/Products/12 Heart of the Night Brass Earrings/4.png"
+      ],
+      "media": [],
+      "options": [],
+      "variants": [
+        { "id": "gid://shopify/ProductVariant/58045929652390", "options": [], "price": 80.0, "available": true }
+      ]
     }
   ]
 };

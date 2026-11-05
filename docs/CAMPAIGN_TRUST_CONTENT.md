@@ -20,4 +20,4 @@ The campaign remains product-first. The trust content appears after the campaign
 
 ## Current campaign catalog
 
-The campaign now contains 11 client-approved products. The layout and product configuration remain extensible if the client approves future additions; do not select further pieces automatically from the full store.
+The campaign now contains 12 client-approved products. The layout and product configuration remain extensible if the client approves future additions; do not select further pieces automatically from the full store.

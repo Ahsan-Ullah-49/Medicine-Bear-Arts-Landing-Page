@@ -6,10 +6,10 @@ Last reviewed: 2026-11-05.
 
 - JavaScript syntax passed for `js/theme.js`, `js/products.js`, `js/shopify.js`, and `js/app.js`.
 - CSS brace balance passed.
-- Catalog validation passed: 11 products, 25 configured variants, and 51 configured local media references all resolve to files in the project.
+- Catalog validation passed: 12 products, 26 configured variants, and 55 configured local media references all resolve to files in the project.
 - The description control source was checked: the collapsed control follows the preview copy, and the expanded control follows the remaining copy.
 - Local static-server checks returned `200` for all 11 product URLs and the page's core HTML, CSS, JavaScript, vendor, and license files.
-- Final Shopify Storefront audit in the Canadian market passed: 11 products, 25 variants, and 24 currently available variants. Current CAD prices were refreshed in the snapshot fallback data:
+- The original final Shopify Storefront audit in the Canadian market passed: 11 products, 25 variants, and 24 currently available variants. Heart of the Night Brass Earrings was subsequently read live in the Canadian market as one available $80 CAD variant, bringing the current configured catalogue to 12 products, 26 variants, and 25 known available variants. Current CAD prices were refreshed in the snapshot fallback data:
   - The Whispers of the Needle — CAD 120.00
   - Spirit of the Sky — CAD 140.00
   - The Golden Radiance Bracelet — CAD 180.00
