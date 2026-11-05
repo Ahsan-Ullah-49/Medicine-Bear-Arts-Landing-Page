@@ -4,11 +4,13 @@ A mobile-first, static product landing page for Medicine Bear Arts. It presents 
 
 ## What is included
 
-- Six selectable products through `?product=<slug>` URLs.
+- Eleven selectable products through `?product=<slug>` URLs.
 - Product galleries, descriptions, options, quantity controls, and product-specific WhatsApp messages.
 - Shopify Storefront Cart API integration in the Canadian market with CAD pricing.
 - A multi-item bag that redirects to Shopify's secure checkout URL.
 - A preview-only fallback if the Shopify API cannot be reached.
+- A controlled, secondary trust path with concise artist/story, shipping, returns, materials, contact, and Shop All links to the official store.
+- Provider-neutral campaign-link events for a future consented analytics container.
 - Light and dark themes, smooth wheel scrolling, responsive desktop/mobile layouts, review carousel, and accessible keyboard controls.
 
 ## Project structure
@@ -48,13 +50,13 @@ The page uses the public Storefront API at `medicine-bear-arts.myshopify.com` in
 
 When the Storefront API responds, the page reads current product variants, prices, availability, and the Shopify checkout URL. The displayed bag creates a Shopify cart. When the connection fails, the bag becomes a clearly labelled local preview and checkout is disabled.
 
-The current live read audit confirmed all six configured products, their CAD prices, availability, and configured variant counts. A successful checkout redirect confirms that Shopify accepts a cart; it does not confirm payment or an order.
+A final live read audit confirmed all 11 configured products in the Canadian storefront, including their titles, CAD prices, variant IDs, and availability. A successful checkout redirect confirms that Shopify accepts a cart; it does not confirm payment or an order.
 
 ## Catalog and media updates
 
 Edit [js/products.js](js/products.js) to add a product, change approved campaign copy, update local media paths, or change a product slug. Keep Shopify handles in `storeUrl` accurate because the app derives live product reads from that URL.
 
-Use product media that is approved by the client. The current 39 PNG files are about 72 MB in total. Convert and resize copies for production before paid traffic, while retaining the supplied originals separately.
+Use product media that is approved by the client. The current 51 PNG files are about 58 MB in total. Convert and resize copies for production before paid traffic, while retaining the supplied originals separately.
 
 ## GitHub and static deployment
 
@@ -68,7 +70,7 @@ For GitHub Pages:
 4. Wait for the Pages URL, then test all featured-product URLs and a Shopify checkout redirect.
 5. Add a custom domain only after the client approves its hosting and DNS plan.
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the release checklist and [docs/QA_REPORT.md](docs/QA_REPORT.md) for the completed pre-deployment checks.
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the release checklist and [docs/QA_REPORT.md](docs/QA_REPORT.md) for the completed pre-deployment checks. Campaign trust content and measurement handoff are documented in [docs/CAMPAIGN_TRUST_CONTENT.md](docs/CAMPAIGN_TRUST_CONTENT.md) and [docs/ANALYTICS_HANDOFF.md](docs/ANALYTICS_HANDOFF.md).
 
 ## Before client launch
 

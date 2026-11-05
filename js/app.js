@@ -246,6 +246,15 @@
   // ---------------------------------------------------------------------------
   // Delegated product, cart, and gallery interactions
   // ---------------------------------------------------------------------------
+  // Secondary-path events stay provider-neutral. If a consented analytics
+  // container exposes dataLayer, it receives the same non-personalized event.
+  function trackCampaignLink(target) {
+    const destination = target.dataset.campaignLink;
+    if (!destination) return;
+    const detail = { destination, page_location: window.location.href };
+    window.dispatchEvent(new CustomEvent("medicinebear:campaign-interaction", { detail }));
+    if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: "medicinebear_campaign_link_click", ...detail });
+  }
   document.addEventListener("change", event => {
     if (!event.target.matches("[data-option-index]")) return;
     const index = Number(event.target.dataset.optionIndex);
@@ -275,6 +284,7 @@
     }
     const target = event.target.closest("button, a"); if (!target) return;
     if (target.matches('[aria-disabled="true"]')) { event.preventDefault(); return; }
+    trackCampaignLink(target);
     if (target.hasAttribute("data-cart-open")) { event.preventDefault(); openCart(); return; }
     if (target.hasAttribute("data-cart-close")) { event.preventDefault(); closeCart(); return; }
     if (target.hasAttribute("data-retry-store")) { event.preventDefault(); loadStore(); return; }

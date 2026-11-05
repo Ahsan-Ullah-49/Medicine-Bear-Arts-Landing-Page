@@ -371,9 +371,10 @@ button:active, a.button:active, .header-contact:active, .floating-action:active 
 .product-option { display: grid; gap: 8px; color: var(--forest); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .product-option select { width: 100%; min-height: 46px; padding: 0 38px 0 13px; border: 1px solid #c9cec1; border-radius: 0; background: transparent; color: var(--ink); font-size: 14px; text-transform: none; letter-spacing: normal; }
 .product-option-note { grid-column: 1 / -1; margin: 0; color: #596355; font-size: 12px; line-height: 1.5; }
-.description-details { margin: 20px 0; color: #666e61; font-size: 14px; line-height: 1.8; }
-.description-details p { margin: 0 0 10px; }
-.description-details summary { width: fit-content; color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+/* Keep the control under the preview when closed and after the full copy when open. */
+.description-details { display: flex; flex-direction: column; margin: 20px 0; color: #666e61; font-size: 14px; line-height: 1.8; }
+.description-details > p { order: 1; margin: 0 0 10px; }
+.description-details > summary { order: 2; width: fit-content; color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
 .product-hero__controls { margin-top: 20px; font-size: 12px; font-weight: 700; letter-spacing: .05em; }
 .product-hero__actions { margin-top: 16px; }
 .button { min-height: 48px; border-radius: 3px; }
@@ -534,6 +535,48 @@ body :is(.site-header .header-contact, .product-hero__actions [data-add], .foote
 .testimonial-controls { width: 100%; justify-content: center; gap: 14px; padding-top: 0; }
 .review-control { width: 48px; height: 48px; }
 
+/* Controlled trust path: informative, calm, and placed after campaign products. */
+.campaign-trust { padding: 58px 0; border-top: 1px solid var(--line); background: #f2f1e9; }
+.campaign-trust__lead { display: grid; gap: 24px; padding-bottom: 30px; border-bottom: 1px solid #d6d8cf; }
+.campaign-trust__lead .eyebrow { margin-bottom: 12px; }
+.campaign-trust h2 { max-width: 14ch; margin: 0; font-family: var(--sans); font-size: clamp(37px, 4.15vw, 56px); font-weight: 500; line-height: .98; letter-spacing: -.06em; }
+.campaign-trust h2 em { color: #bf8b25; font-family: var(--display); font-size: 1.14em; font-weight: 400; font-style: italic; letter-spacing: -.052em; }
+.campaign-trust__copy { max-width: 62ch; }
+.campaign-trust__copy > p { margin: 0; color: #5e665b; font-size: 15px; line-height: 1.75; }
+.campaign-trust__links { display: flex; flex-wrap: wrap; gap: 13px 22px; margin-top: 20px; }
+.campaign-inline-link { display: inline-flex; align-items: center; gap: 7px; color: var(--forest); font-size: 13px; font-weight: 700; line-height: 1.4; text-decoration: none; }
+.campaign-inline-link span, .footer-resources a span { font-size: 15px; transition: transform .25s ease; }
+.campaign-inline-link:hover, .campaign-inline-link:focus-visible { color: #87631d; text-decoration: underline; text-underline-offset: 5px; }
+.campaign-inline-link:hover span, .campaign-inline-link:focus-visible span, .footer-resources a:hover span, .footer-resources a:focus-visible span { transform: translate(2px, -2px); }
+.campaign-trust__cards { display: grid; gap: 14px; margin-top: 30px; }
+.trust-card { min-height: 100%; padding: 25px 22px; border: 1px solid #d4d8ce; background: rgba(255, 255, 255, .36); }
+.trust-card__number { margin: 0 0 26px; color: #a5853b; font-size: 11px; font-weight: 700; letter-spacing: .14em; }
+.trust-card h3 { margin: 0; color: var(--ink); font-family: var(--sans); font-size: 21px; font-weight: 500; letter-spacing: -.035em; }
+.trust-card > p:not(.trust-card__number) { margin: 12px 0 18px; color: #61695e; font-size: 13px; line-height: 1.7; }
+.trust-card .campaign-inline-link { font-size: 12px; }
+
+/* Footer links are intentionally secondary to the existing WhatsApp CTA. */
+.footer-resources { display: grid; gap: 13px; margin: 0; padding: 24px 0; border-bottom: 1px solid #cdd6c7; }
+.footer-resources > p { margin: 0; color: #667060; font-size: 12px; font-weight: 600; }
+.footer-resources__links { display: flex; flex-wrap: wrap; gap: 9px 19px; }
+.footer-resources a { display: inline-flex; align-items: center; gap: 5px; color: var(--forest); font-size: 12px; font-weight: 700; line-height: 1.5; text-decoration: none; }
+.footer-resources a:hover, .footer-resources a:focus-visible { color: #87631d; text-decoration: underline; text-underline-offset: 4px; }
+
+html[data-theme="dark"] .campaign-trust { border-color: #3f5245; background: #17271f; }
+html[data-theme="dark"] .campaign-trust__lead { border-color: #405446; }
+html[data-theme="dark"] .campaign-trust__copy > p, html[data-theme="dark"] .trust-card > p:not(.trust-card__number) { color: #c0cabd; }
+html[data-theme="dark"] .campaign-inline-link, html[data-theme="dark"] .footer-resources a { color: #ead9b0; }
+html[data-theme="dark"] .campaign-inline-link:hover, html[data-theme="dark"] .campaign-inline-link:focus-visible, html[data-theme="dark"] .footer-resources a:hover, html[data-theme="dark"] .footer-resources a:focus-visible { color: #fff3d1; }
+html[data-theme="dark"] .trust-card { border-color: #405446; background: rgba(255, 255, 255, .025); }
+html[data-theme="dark"] .trust-card h3 { color: #f4f2e8; }
+html[data-theme="dark"] .footer-resources { border-color: #405446; }
+html[data-theme="dark"] .footer-resources > p { color: #c0cabd; }
+
+@media (min-width: 760px) {
+  .campaign-trust__lead { grid-template-columns: minmax(0, .9fr) minmax(300px, 1.1fr); align-items: end; gap: clamp(40px, 8vw, 130px); }
+  .campaign-trust__cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
 @media (min-width: 1000px) {
   .product-hero { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: start; gap: clamp(54px, 5.1vw, 74px); }
   .product-hero__visual { --hero-frame-height: min(575px, calc(100svh - 150px)); display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: 16px; }
@@ -574,6 +617,14 @@ body :is(.site-header .header-contact, .product-hero__actions [data-add], .foote
   .testimonial-intro h2 { font-size: 38px; }
   .testimonial-card { height: 510px; padding: 22px 18px; }
   .testimonial-text { font-size: 15px; line-height: 1.6; }
+  .campaign-trust { padding: 46px 0; }
+  .campaign-trust__lead { gap: 20px; padding-bottom: 25px; }
+  .campaign-trust__cards { margin-top: 24px; }
+  .trust-card { padding: 22px 18px; }
+  .trust-card__number { margin-bottom: 18px; }
+  .trust-card h3 { font-size: 20px; }
+  .trust-card > p:not(.trust-card__number) { font-size: 12px; }
+  .footer-resources { padding: 20px 0; }
   .site-footer { padding: 36px 0 15px; }
   .footer-cta { gap: 12px; padding-bottom: 27px; }
   .footer-cta h2 { max-width: 12ch; font-size: clamp(40px, 12vw, 58px); }

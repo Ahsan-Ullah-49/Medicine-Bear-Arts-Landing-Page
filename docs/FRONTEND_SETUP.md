@@ -20,7 +20,7 @@ Smooth wheel scrolling uses locally bundled Lenis and its MIT license in `assets
 
 ## Products, prices and contact
 
-Edit `js/products.js` to add products or update their content and media. Each product needs a unique stable slug; a local product URL is `index.html?product=your-slug`. Six products are configured; the featured product is excluded from the five recommendations. An unknown slug shows the first product and a notice. Other campaign parameters are retained when navigating.
+Edit `js/products.js` to add products or update their content and media. Each product needs a unique stable slug; a local product URL is `index.html?product=your-slug`. Eleven products are configured; the featured product is excluded from the ten recommendations. An unknown slug shows the first product and a notice. Other campaign parameters are retained when navigating.
 
 The configured WhatsApp number is the client-supplied Canadian number. Product links include the relevant product name in the message. CSV catalog values and variant IDs are snapshots; `js/shopify.js` requests live products, variants, prices, and availability from the Storefront API in the Canadian context and verifies CAD. Grand Mother Wolf and Celestial Moonlight have gemstone options. Celestial chain-length requests should be discussed on WhatsApp because this frontend does not currently provide an order-note field. The page falls back to labeled snapshot prices when the store cannot be reached.
 
