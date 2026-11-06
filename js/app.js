@@ -104,6 +104,47 @@
     return `<a class="${classes}" href="https://wa.me/${encodeURIComponent(number)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener noreferrer">${escapeHTML(text)} <span aria-hidden="true">↗</span></a>`;
   }
   function routeHref(slug) { const params = new URLSearchParams(window.location.search); params.set("product", slug); return `?${params.toString()}`; }
+  function shareURL(product) { return new URL(routeHref(product.slug), window.location.href).href; }
+  function shareMarkup(product) {
+    const id = `share-menu-${escapeHTML(product.slug)}`;
+    const url = shareURL(product);
+    const text = `Take a look at ${product.name} from Medicine Bear Arts:`;
+    const whatsappURL = `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`;
+    const facebookURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    return `<div class="product-share" data-product-share><button type="button" class="product-share__trigger" data-share-toggle="${escapeHTML(product.slug)}" aria-expanded="false" aria-controls="${id}"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.6"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.6"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.6"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Share</span></button><div id="${id}" class="product-share__menu" role="menu" aria-label="Share ${escapeHTML(product.name)}" hidden><button type="button" role="menuitem" data-share-native="${escapeHTML(product.slug)}">Share via device</button><a role="menuitem" data-share-whatsapp="${escapeHTML(product.slug)}" href="${escapeHTML(whatsappURL)}" target="_blank" rel="noopener noreferrer">Share on WhatsApp <span aria-hidden="true">↗</span></a><a role="menuitem" data-share-facebook="${escapeHTML(product.slug)}" href="${escapeHTML(facebookURL)}" target="_blank" rel="noopener noreferrer">Share on Facebook <span aria-hidden="true">↗</span></a><button type="button" role="menuitem" data-share-copy="${escapeHTML(product.slug)}">Copy product link</button><p class="product-share__status" role="status" aria-live="polite"></p></div></div>`;
+  }
+  function closeShareMenus(except = null) {
+    document.querySelectorAll("[data-product-share]").forEach(wrapper => {
+      const menu = wrapper.querySelector(".product-share__menu");
+      const trigger = wrapper.querySelector("[data-share-toggle]");
+      if (!menu || !trigger || menu === except) return;
+      menu.hidden = true;
+      trigger.setAttribute("aria-expanded", "false");
+    });
+  }
+  function setShareStatus(control, message) {
+    const status = control.closest("[data-product-share]")?.querySelector(".product-share__status");
+    if (!status) return;
+    status.textContent = message;
+    window.setTimeout(() => { if (status.textContent === message) status.textContent = ""; }, 2600);
+  }
+  async function copyShareURL(product) {
+    const value = shareURL(product);
+    try {
+      if (navigator.clipboard?.writeText && window.isSecureContext) { await navigator.clipboard.writeText(value); return true; }
+      const input = document.createElement("textarea");
+      input.value = value; input.setAttribute("readonly", ""); input.style.cssText = "position:fixed;opacity:0;pointer-events:none";
+      document.body.append(input); input.select(); const copied = document.execCommand("copy"); input.remove(); return copied;
+    } catch (_) { return false; }
+  }
+  async function shareProduct(product, control) {
+    const data = { title: product.name, text: `Take a look at ${product.name} from Medicine Bear Arts.`, url: shareURL(product) };
+    if (navigator.share) {
+      try { await navigator.share(data); return; }
+      catch (error) { if (error?.name === "AbortError") return; }
+    }
+    setShareStatus(control, await copyShareURL(product) ? "Product link copied." : "Could not copy the link. Please copy it from your browser.");
+  }
   function currentProduct() {
     const slug = new URLSearchParams(window.location.search).get("product");
     if (routeMessage) routeMessage.textContent = slug && !bySlug.has(slug) ? "That product is not available in this collection. Showing the first product instead." : "";
@@ -154,7 +195,7 @@
     const availability = commerceMode === "live" && !product.storefrontReady ? '<p class="product-hero__note">This product is not currently available through the online checkout. Please contact us.</p>' : variant?.available === false ? '<p class="product-hero__note">This option is currently unavailable. Please choose another or contact us.</p>' : options.length && productVariants(product).length && !variant ? '<p class="product-hero__note">This combination is not available. Please select another option.</p>' : "";
     const unavailable = commerceMode === "checking" || cartBusy || cartNeedsRefresh || (commerceMode === "live" && (!product.storefrontReady || !variant?.id || variant.available !== true)) || (options.length && productVariants(product).length && !variant);
     const note = cartNeedsRefresh ? "The store connection was interrupted. Refresh your cart; prices and availability may have changed." : commerceMode === "live" && product.storefrontReady ? "Secure checkout through Shopify. Shipping and taxes are confirmed at checkout." : commerceMode === "checking" ? "Checking availability with the store…" : "Preview only. Current price and availability need confirmation.";
-    featured.innerHTML = `<div class="product-hero"><div class="product-hero__visual"><div class="product-hero__frame">${displayMedia(product, true)}${galleryControls}</div>${gallery}</div><div class="product-hero__content"><h1 class="product-hero__title">${escapeHTML(product.name)}</h1><p class="product-hero__price">${escapeHTML(formatPrice(currentPrice))}</p>${product.priceStatus === "snapshot" ? '<p class="price-note">Catalog price; current price needs confirmation.</p>' : ""}${optionMarkup ? `<div class="product-options">${optionMarkup}${gemstoneNote}</div>` : ""}${availability}<div class="product-hero__controls"><span>Quantity</span><div class="quantity-control" aria-label="Select quantity"><button type="button" data-quantity="decrease" aria-label="Decrease quantity">−</button><output aria-live="polite">${quantity}</output><button type="button" data-quantity="increase" aria-label="Increase quantity">+</button></div></div><div class="product-hero__actions"><button type="button" class="button button--primary" data-add="${escapeHTML(product.slug)}"${unavailable ? " disabled" : ""}>Add to Cart <span aria-hidden="true">↗</span></button>${whatsappMarkup(product, "button button--whatsapp", "Ask on WhatsApp")}</div><p class="product-hero__note">${escapeHTML(note)}</p>${descriptionMarkup(product)}</div></div>`;
+    featured.innerHTML = `<div class="product-hero"><div class="product-hero__visual"><div class="product-hero__frame">${displayMedia(product, true)}${galleryControls}</div>${gallery}</div><div class="product-hero__content"><h1 class="product-hero__title">${escapeHTML(product.name)}</h1><p class="product-hero__price">${escapeHTML(formatPrice(currentPrice))}</p>${product.priceStatus === "snapshot" ? '<p class="price-note">Catalog price; current price needs confirmation.</p>' : ""}${optionMarkup ? `<div class="product-options">${optionMarkup}${gemstoneNote}</div>` : ""}${availability}<div class="product-hero__controls"><div class="product-quantity"><span>Quantity</span><div class="quantity-control" aria-label="Select quantity"><button type="button" data-quantity="decrease" aria-label="Decrease quantity">−</button><output aria-live="polite">${quantity}</output><button type="button" data-quantity="increase" aria-label="Increase quantity">+</button></div></div>${shareMarkup(product)}</div><div class="product-hero__actions"><button type="button" class="button button--primary" data-add="${escapeHTML(product.slug)}"${unavailable ? " disabled" : ""}>Add to Cart <span aria-hidden="true">↗</span></button>${whatsappMarkup(product, "button button--whatsapp", "Ask on WhatsApp")}</div><p class="product-hero__note">${escapeHTML(note)}</p>${descriptionMarkup(product)}</div></div>`;
     const others = products.filter(item => item !== product);
     if (productCount) productCount.textContent = `${String(others.length).padStart(2, "0")} pieces`;
     grid.innerHTML = others.map(item => `<article class="product-card"><a class="product-card__visual" href="${escapeHTML(routeHref(item.slug))}" data-product-link="${escapeHTML(item.slug)}" aria-label="View ${escapeHTML(item.name)}">${displayMedia(item)}</a><div class="product-card__body"><h3 class="product-card__title">${escapeHTML(item.name)}</h3><p class="product-card__price">${escapeHTML(cardPrice(item))}</p>${item.priceStatus === "snapshot" ? '<p class="price-note">Price needs confirmation</p>' : ""}<div class="product-card__actions"><a class="button button--outline" href="${escapeHTML(routeHref(item.slug))}" data-product-link="${escapeHTML(item.slug)}">View piece <span aria-hidden="true">↗</span></a>${whatsappMarkup(item, "button button--whatsapp", "Ask on WhatsApp")}</div></div></article>`).join("");
@@ -270,6 +311,7 @@
     renderProducts(); featured.querySelector(`[data-option-index="${index}"]`)?.focus();
   });
   document.addEventListener("keydown", event => {
+    if (event.key === "Escape") { closeShareMenus(); return; }
     const summary = event.target.closest(".description-details > summary");
     if (!summary || (event.key !== "Enter" && event.key !== " ")) return;
     event.preventDefault();
@@ -282,6 +324,32 @@
       toggleDescription(summary.parentElement);
       return;
     }
+    const shareToggle = event.target.closest("[data-share-toggle]");
+    if (shareToggle) {
+      event.preventDefault();
+      const menu = document.getElementById(shareToggle.getAttribute("aria-controls"));
+      if (!menu) return;
+      const opening = menu.hidden;
+      closeShareMenus(menu);
+      menu.hidden = !opening;
+      shareToggle.setAttribute("aria-expanded", String(opening));
+      return;
+    }
+    const shareNative = event.target.closest("[data-share-native]");
+    if (shareNative) {
+      event.preventDefault();
+      const product = bySlug.get(shareNative.dataset.shareNative);
+      if (product) void shareProduct(product, shareNative);
+      return;
+    }
+    const shareCopy = event.target.closest("[data-share-copy]");
+    if (shareCopy) {
+      event.preventDefault();
+      const product = bySlug.get(shareCopy.dataset.shareCopy);
+      if (product) void copyShareURL(product).then(copied => setShareStatus(shareCopy, copied ? "Product link copied." : "Could not copy the link. Please copy it from your browser."));
+      return;
+    }
+    if (!event.target.closest("[data-product-share]")) closeShareMenus();
     const target = event.target.closest("button, a"); if (!target) return;
     if (target.matches('[aria-disabled="true"]')) { event.preventDefault(); return; }
     trackCampaignLink(target);
