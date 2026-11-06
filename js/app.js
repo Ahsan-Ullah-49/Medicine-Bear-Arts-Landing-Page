@@ -8,6 +8,7 @@
   if (!config || !Array.isArray(config.products) || !config.products.length) return;
   const products = config.products;
   const bySlug = new Map(products.map(product => [product.slug, product]));
+  const defaultProduct = bySlug.get("eagle-spirit-brass-stud-earrings") || products[0];
   const featured = document.querySelector("#featured-product");
   const grid = document.querySelector("#product-grid");
   const productCount = document.querySelector("#product-count");
@@ -147,8 +148,8 @@
   }
   function currentProduct() {
     const slug = new URLSearchParams(window.location.search).get("product");
-    if (routeMessage) routeMessage.textContent = slug && !bySlug.has(slug) ? "That product is not available in this collection. Showing the first product instead." : "";
-    return bySlug.get(slug) || products[0];
+    if (routeMessage) routeMessage.textContent = slug && !bySlug.has(slug) ? "That product is not available in this collection. Showing the featured product instead." : "";
+    return bySlug.get(slug) || defaultProduct;
   }
   function descriptionMarkup(product) {
     const text = plainText(product.description);
